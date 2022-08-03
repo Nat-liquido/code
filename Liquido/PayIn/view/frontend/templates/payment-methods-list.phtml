@@ -1,6 +1,13 @@
 <h1>Liquido Pagamentos</h1>
 <h2>Escolha como quer pagar</h2>
 <?php
-    //echo $block->escapeHtml($block->getLiquidoBrazilPayInMethods());
-    echo $block->getLiquidoBrazilPayInMethods();
+$brazil_payin_methods = $this->getLiquidoBrazilPayInMethods();
 ?>
+
+<ul>
+    <?php foreach ($brazil_payin_methods as $payin_method) : ?>
+        <li>
+            <a href='#'><?php echo $payin_method; ?></a>
+        </li>
+    <?php endforeach; ?>
+</ul>
