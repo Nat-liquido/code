@@ -1,0 +1,11 @@
+<h1>Liquido Pagamentos</h1>
+<?php
+$payin_method_name = $this->getPixPayInMethodName();
+?>
+<h2>Pagar com <?php echo $payin_method_name ?></h2>
+<a href="start">Alterar</a>
+<form action="<?php echo $this->getUrl('liquido/checkout/pixsteptwo', ['_secure' => true]); ?>" id="customer-data-form">
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email"><br>
+    <input type="submit" value="Criar Pix">
+</form>

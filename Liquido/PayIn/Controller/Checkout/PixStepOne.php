@@ -7,8 +7,9 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\ResultInterface;
 
-class Start extends Action
+class PixStepOne extends Action
 {
+
     /**
      * @var JsonFactory
      */
@@ -18,7 +19,6 @@ class Start extends Action
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      */
-    /*
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory
@@ -26,26 +26,22 @@ class Start extends Action
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
     }
-    */
+    
 
     /**
      * View  page action
      *
      * @return ResultInterface
      */
-    
-    /*public function execute()
-    {
-        $result = $this->resultJsonFactory->create();
-        $data = ['message' => 'Hello world!'];
-
-        return $result->setData($data);
-    }
-    */
-
     public function execute()
     {
+        // $result = $this->resultJsonFactory->create();
+        // $data = ['message' => 'PixStepOne.php'];
+
+        // return $result->setData($data);
+
         $this->_view->loadLayout();
         $this->_view->renderLayout();
     }
+
 }
