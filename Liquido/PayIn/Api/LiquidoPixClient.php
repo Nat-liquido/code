@@ -14,6 +14,8 @@ class LiquidoPixClient
 
     protected $curl;
 
+    private $liquidoAccessToken;
+
     // public function __construct(
     //     Curl $_curl
     // ) {
@@ -28,12 +30,17 @@ class LiquidoPixClient
         $this->curl = new Curl;
         $this->curl->addHeader("Content-Type", "application/json");
         $this->curl->addHeader("x-api-key", LiquidoPixClient::API_KEY);
+
+        $liquidoAuthClient = new LiquidoAuthClient;
+        $authJsonResponse = $liquidoAuthClient->authenticate();
+        $authResponse = json_decode($authJsonResponse);
+        $this->liquidoAccessToken = $authResponse->access_token;
     }
 
-    public function createPixPayIn($accessToken)
+    public function createPixPayIn($customerEmail)
     {
 
-        $this->curl->addHeader("Authorization", "Bearer $accessToken");
+        $this->curl->addHeader("Authorization", "Bearer $this->liquidoAccessToken");
 
         $url = $this::BASE_URL . $this::PIX_ENDPOINT;
 
@@ -47,13 +54,12 @@ class LiquidoPixClient
             "country" => "BR",
             "paymentMethod" => "PIX_STATIC_QR",
             "paymentFlow" => "DIRECT",
-            "payer" => (object) null
+            "payer" => [
+                "email" => $customerEmail
+            ]
         ];
 
         $jsonData = json_encode($data);
-
-        // echo $url . " - ";
-        // echo $jsonData . " - ";
 
         try {
             $this->curl->post($url, $jsonData);
