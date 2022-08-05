@@ -38,22 +38,19 @@ class LiquidoPixClient
         $url = $this::BASE_URL . $this::PIX_ENDPOINT;
 
         $mathRandom = new Random;
-
         $idempotencyKey = $mathRandom->getUniqueHash();
 
-        $jsonData = <<<HEREA
-        {
-            "idempotencyKey": "$idempotencyKey",
-            "amount": 128,
-            "currency": "BRL",
-            "country": "BR",
-            "paymentMethod": "PIX_STATIC_QR",
-            "paymentFlow": "DIRECT",
-            "payer": {
+        $data = [
+            "idempotencyKey" => $idempotencyKey,
+            "amount" => 128,
+            "currency" => "BRL",
+            "country" => "BR",
+            "paymentMethod" => "PIX_STATIC_QR",
+            "paymentFlow" => "DIRECT",
+            "payer" => (object) null
+        ];
 
-            }
-        }
-        HEREA;
+        $jsonData = json_encode($data);
 
         // echo $url . " - ";
         // echo $jsonData . " - ";
@@ -63,7 +60,7 @@ class LiquidoPixClient
             $result = $this->curl->getBody();
             return $result;
         } catch (\Exception $e) {
-            // TO DO something...
+            echo $e;
         }
     }
 }

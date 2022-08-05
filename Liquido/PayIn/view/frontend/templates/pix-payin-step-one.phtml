@@ -3,9 +3,21 @@
 $payin_method_name = $this->getPixPayInMethodName();
 ?>
 <h2>Pagar com <?php echo $payin_method_name ?></h2>
-<a href="start">Alterar</a>
+<a href="start">Alterar</a> <br /><br />
+
 <form action="<?php echo $this->getUrl('liquido/checkout/pixsteptwo', ['_secure' => true]); ?>" id="customer-data-form">
-    <label for="email">Email:</label><br>
-    <input type="email" id="email" name="email"><br>
-    <input type="submit" value="Criar Pix">
+    <fieldset class="fieldset">
+        <legend class="legend"><span><?php echo __('Dados Pessoais') ?></span></legend><br>
+        <div class="field required">
+            <label for="email_address" class="label"><span><?php echo __('Email') ?></span></label>
+            <div class="control">
+                <input type="email" name="email" id="email_address" value="" title="<?php echo __('Email') ?>" class="input-text" data-validate="{required:true, 'validate-email':true}">
+            </div>
+        </div>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action submit primary" title="<?php echo __('Criar Pix') ?>"><span><?php echo __('Criar Pix') ?></span></button>
+        </div>
+    </div>
 </form>

@@ -41,7 +41,7 @@ class LiquidoAuthClient
             $result = $this->curl->getBody();
             return $result;
         } catch (\Exception $e) {
-            // TO DO something...
+            echo $e;
         }
     }
 }

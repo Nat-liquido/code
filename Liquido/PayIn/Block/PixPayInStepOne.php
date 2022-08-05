@@ -8,7 +8,7 @@ class PixPayInStepOne extends Template
 {
     public function getPixPayInMethodName()
     {
-        //return LiquidoPayInMethod::PIX;
+        // return LiquidoPayInMethod::PIX;
         return "Pix";
     }
 
