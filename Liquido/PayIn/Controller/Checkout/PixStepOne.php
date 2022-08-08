@@ -4,7 +4,7 @@ namespace Liquido\PayIn\Controller\Checkout;
 
 use Magento\Framework\App\Action\Action;
 
-class Start extends Action
+class PixStepOne extends Action
 {
     public function execute()
     {

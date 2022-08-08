@@ -1,0 +1,36 @@
+<h1>Liquido Pagamentos</h1>
+<?php
+$payin_method_name = $this->getPixPayInMethodName();
+?>
+<h2>Pagar com <?php echo $payin_method_name ?></h2>
+<a href="start">Alterar</a> <br /><br />
+
+<!-- <form class="form" id="custom-form" method="post" autocomplete="off"> -->
+<form class="form" action="<?php echo $this->getUrl('liquido/checkout/pixsteptwo', ['_secure' => true]); ?>" id="customer-data-form">
+    <fieldset class="fieldset">
+        <legend class="legend"><span><?php echo __('Dados Pessoais') ?></span></legend><br>
+        <div class="field required">
+            <label for="email_address" class="label"><span><?php echo __('Email') ?></span></label>
+            <div class="control">
+                <input type="email" name="email_address" id="email_address" value="" title="<?php echo __('Email') ?>" class="input-text" data-validate="{required:true, 'validate-email':true}">
+            </div>
+        </div>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action submit primary" title="<?php echo __('Criar Pix') ?>"><span><?php echo __('Criar Pix') ?></span></button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    require([
+        'jquery',
+        'mage/mage'
+    ], function($) {
+
+        var dataForm = $('#customer-data-form');
+        dataForm.mage('validation', {});
+
+    });
+</script>

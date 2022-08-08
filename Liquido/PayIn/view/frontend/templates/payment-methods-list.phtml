@@ -7,7 +7,7 @@ $brazil_payin_methods = $this->getLiquidoBrazilPayInMethods();
 <ul>
     <?php foreach ($brazil_payin_methods as $payin_method) : ?>
         <li>
-            <a href='#'><?php echo $payin_method; ?></a>
+            <a href="<?php echo $this->getPayInMethodViewRoute($payin_method) ?>"><?php echo $payin_method; ?></a>
         </li>
     <?php endforeach; ?>
 </ul>
