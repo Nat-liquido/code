@@ -4,14 +4,14 @@ namespace Liquido\PayIn\Block;
 
 use \Magento\Framework\View\Element\Template;
 use \Magento\Framework\View\Element\Template\Context;
-// use \PHPQRCode\QRcode;
+use \Magento\Framework\App\ObjectManager;
 
 use \Liquido\PayIn\Service\LiquidoPixPayInService;
 
 class PixPayInStepTwo extends Template
 {
 
-    private $pixCode = "<access_token>";
+    private $pixCode = "<pix_code>";
 
     public function __construct(
         Context $context,
@@ -22,7 +22,12 @@ class PixPayInStepTwo extends Template
         
         $customerEmail = $this->getCustomerEmail();
         
-        $this->pixCode = $pixPayInService->createLiquidoPixPayIn($customerEmail);
+        $amountTotal = $this->getCartAmountTotal();
+
+        // $orderId = $this->getOrderId();
+        // echo "*** orderId: $orderId";
+
+        $this->pixCode = $pixPayInService->createLiquidoPixPayIn($customerEmail, $amountTotal);
     }
 
     public function getPixCode()
@@ -35,42 +40,27 @@ class PixPayInStepTwo extends Template
         return $this->getRequest()->getParam('email_address');
     }
 
+    private function getOrderId()
+    {
+        try {
+            $objectManager = ObjectManager::getInstance();
+            $cart = $objectManager->get('\Magento\Checkout\Model\Cart');
+            return $cart->getQuote()->getId();
+        } catch (\Exception $e) {
+            echo $e;
+            return null;
+        }
+    }
+
     private function getCartAmountTotal()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        // $objectManagerType = gettype($objectManager);
-        // echo "objectManager Type: $objectManagerType - ";
-
-        $cart = $objectManager->get('\Magento\Checkout\Model\Cart');
-        // $cartType = gettype($cart);
-        // echo "cart Type: $cartType - ";
-
-        // // get quote items collection
-        // $itemsCollection = $cart->getQuote()->getItemsCollection();
-        // $itemsCollectionType = gettype($itemsCollection);
-        // echo "itemsCollection Type: $itemsCollectionType - ";
-
-        // // get array of all items what can be display directly
-        // $itemsVisible = $cart->getQuote()->getAllVisibleItems();
-        // $itemsVisibleType = gettype($itemsVisible);
-        // echo "itemsVisible Type: $itemsVisibleType - ";
-
-        // // get quote items array
-        // $items = $cart->getQuote()->getAllItems();
-        // $itemsType = gettype($items);
-        // echo "all items Type: $itemsType - ";
-
-        // $items = $cart->getQuote()->getAllItems();
-        // $itemsType = gettype($items);
-        // echo "all items Type: $itemsType";
-
-        // $subTotal = $cart->getQuote()->getSubtotal();
-        // $grandTotal = $cart->getQuote()->getGrandTotal();
-        // $amountType = gettype($subTotal);
-        // echo "Total a pagar: $amountType";
-
-        $items = $cart->getQuote()->getAllItems();
-        $allItemsSize = sizeof($items);
-        echo "allItems Size: $allItemsSize";
+        try {
+            $objectManager = ObjectManager::getInstance();
+            $cart = $objectManager->get('\Magento\Checkout\Model\Cart');
+            return (float) $cart->getQuote()->getGrandTotal() * 100;
+        } catch (\Exception $e) {
+            echo $e;
+            return null;
+        }
     }
 }

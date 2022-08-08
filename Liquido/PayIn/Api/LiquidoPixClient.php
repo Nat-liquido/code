@@ -37,7 +37,7 @@ class LiquidoPixClient
         $this->liquidoAccessToken = $authResponse->access_token;
     }
 
-    public function createPixPayIn($customerEmail)
+    public function createPixPayIn($customerEmail, $amountTotal)
     {
 
         $this->curl->addHeader("Authorization", "Bearer $this->liquidoAccessToken");
@@ -49,7 +49,7 @@ class LiquidoPixClient
 
         $data = [
             "idempotencyKey" => $idempotencyKey,
-            "amount" => 128,
+            "amount" => $amountTotal,
             "currency" => "BRL",
             "country" => "BR",
             "paymentMethod" => "PIX_STATIC_QR",
