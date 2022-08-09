@@ -54,6 +54,7 @@ class LiquidoPixClient
             "country" => "BR",
             "paymentMethod" => "PIX_STATIC_QR",
             "paymentFlow" => "DIRECT",
+            "callbackUrl" => "https://magento-test.requestcatcher.com/test",
             "payer" => [
                 "email" => $customerEmail
             ]
