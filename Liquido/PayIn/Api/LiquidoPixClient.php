@@ -3,7 +3,7 @@
 namespace Liquido\PayIn\Api;
 
 use \Magento\Framework\HTTP\Client\Curl;
-use Magento\Framework\Math\Random;
+// use Magento\Framework\Math\Random;
 
 class LiquidoPixClient
 {
@@ -37,24 +37,24 @@ class LiquidoPixClient
         $this->liquidoAccessToken = $authResponse->access_token;
     }
 
-    public function createPixPayIn($customerEmail, $amountTotal)
+    public function createPixPayIn($incrementId, $customerEmail, $amountTotal)
     {
 
         $this->curl->addHeader("Authorization", "Bearer $this->liquidoAccessToken");
 
         $url = $this::BASE_URL . $this::PIX_ENDPOINT;
 
-        $mathRandom = new Random;
-        $idempotencyKey = $mathRandom->getUniqueHash();
+        // $mathRandom = new Random;
+        // $idempotencyKey = $mathRandom->getUniqueHash();
 
         $data = [
-            "idempotencyKey" => $idempotencyKey,
+            "idempotencyKey" => $incrementId,
             "amount" => $amountTotal,
             "currency" => "BRL",
             "country" => "BR",
             "paymentMethod" => "PIX_STATIC_QR",
             "paymentFlow" => "DIRECT",
-            "callbackUrl" => "https://magento-test.requestcatcher.com/test",
+            "callbackUrl" => "https://hookb.in/RZJb8l7NRJTNyj3N7bDY",
             "payer" => [
                 "email" => $customerEmail
             ]

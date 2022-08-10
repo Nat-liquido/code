@@ -6,11 +6,11 @@ use Liquido\PayIn\Api\LiquidoPixClient;
 
 class LiquidoPixPayInService
 {
-    public function createLiquidoPixPayIn($customerEmail, $amountTotal)
+    public function createLiquidoPixPayIn($incrementId, $customerEmail, $amountTotal)
     {
         try {
             $liquidoPixPayInClient = new LiquidoPixClient;
-            $pixJsonResponse = $liquidoPixPayInClient->createPixPayIn($customerEmail, $amountTotal);
+            $pixJsonResponse = $liquidoPixPayInClient->createPixPayIn($incrementId, $customerEmail, $amountTotal);
             $pixResponse = json_decode($pixJsonResponse);
             return $pixResponse->qrCode;
         } catch (\Exception $e) {
