@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="liquido_tab" translate="label" sortOrder="50">
+            <label>Liquido</label>
+        </tab>
+        <section id="liquido" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Adding custom entries</label>
+            <tab>liquido_tab</tab>
+            <resource>Liquido_PayIn::config_extension</resource>
+            <group id="general" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Configuration</label>
+                <field id="enable_payment_method" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable this payment method?</label>
+                    <source_model>Liquido\PayIn\Model\Config\Custom</source_model>
+                </field>
+                <field id="sandbox_mode" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sandbox mode</label>
+                    <source_model>Liquido\PayIn\Model\Config\Sandbox</source_model>
+                </field>
+                <field id="api_key" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="1">
+                    <label>API Key</label>
+                    <!--<source_model>Liquido\PayIn\Model\Config\Multiselect</source_model>-->
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
