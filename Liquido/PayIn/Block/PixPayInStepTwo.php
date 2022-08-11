@@ -8,6 +8,7 @@ use \Magento\Framework\App\ObjectManager;
 use \Magento\Checkout\Model\Session;
 
 use \Liquido\PayIn\Service\LiquidoPixPayInService;
+use \Liquido\PayIn\Helper\Data;
 
 class PixPayInStepTwo extends Template
 {
@@ -16,20 +17,23 @@ class PixPayInStepTwo extends Template
     private $orderId = "<order_id>";
     private $errorMsg = null;
     protected $checkoutSession;
+    protected $orderData;
 
     public function __construct(
         Context $context,
         Session $checkoutSession,
         LiquidoPixPayInService $pixPayInService,
+        Data $orderData,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->checkoutSession = $checkoutSession;
-        
+        $this->orderData = $orderData;
+
         $customerEmail = $this->getCustomerEmail();
-        
+
         $amountTotal = $this->getCartAmountTotal();
-        if ($amountTotal == 0){
+        if ($amountTotal == 0) {
             $this->errorMsg = "O valor da compra deve ser maior que R$0,00.";
             return null;
         }
@@ -37,6 +41,37 @@ class PixPayInStepTwo extends Template
         $this->orderId = $this->reserveIncrementId();
 
         $this->pixCode = $pixPayInService->createLiquidoPixPayIn($this->orderId, $customerEmail, $amountTotal);
+
+        $newOrderData = $this->getNewOrderData();
+        try {
+            $this->orderData->createMageOrder($newOrderData);
+        } catch (\Exception $e) {
+            echo $e;
+        }
+
+    }
+
+    private function getNewOrderData()
+    {
+        $orderData = [
+            'reserved_increment_id'  => $this->orderId,
+            'currency_id'  => 'BRL',
+            'email'        => $this->getCustomerEmail(), //buyer email id
+            'shipping_address' => [
+                'firstname'    => 'John', //address Details
+                'lastname'     => 'Doe',
+                'street' => '123 Demo',
+                'city' => 'Mageplaza',
+                'country_id' => 'US',
+                'region_id' => 12,
+                'postcode' => '10019',
+                'telephone' => '0123456789',
+                'fax' => '32423',
+                'save_in_address_book' => 1
+            ],
+            'items' => $this->getCartItems()
+        ];
+        return $orderData;
     }
 
     public function getPixCode()
@@ -62,7 +97,7 @@ class PixPayInStepTwo extends Template
     private function reserveIncrementId()
     {
         try {
-            
+
             $this->checkoutSession->getQuote()->reserveOrderId();
             $orderId = $this->checkoutSession->getQuote()->getReservedOrderId();
             return $orderId;
@@ -78,6 +113,19 @@ class PixPayInStepTwo extends Template
             $objectManager = ObjectManager::getInstance();
             $cart = $objectManager->get('\Magento\Checkout\Model\Cart');
             return (float) $cart->getQuote()->getGrandTotal() * 100;
+        } catch (\Exception $e) {
+            echo $e;
+            return null;
+        }
+    }
+
+    private function getCartItems()
+    {
+        try {
+            $objectManager = ObjectManager::getInstance();
+            $cart = $objectManager->get('\Magento\Checkout\Model\Cart');
+            // get quote items array
+            return $cart->getQuote()->getAllItems();
         } catch (\Exception $e) {
             echo $e;
             return null;
