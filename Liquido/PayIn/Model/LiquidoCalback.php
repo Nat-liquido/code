@@ -2,9 +2,11 @@
 
 namespace Liquido\PayIn\Model;
 
-use \Magento\Framework\DataObject;
+// use \Magento\Framework\DataObject;
 use \Magento\Framework\Webapi\Rest\Request;
-use Magento\Framework\Event\ManagerInterface as EventManager;
+use \Magento\Framework\Event\ManagerInterface as EventManager;
+
+use Liquido\PayIn\Util\LiquidoPayInStatus;
 
 class LiquidoCalback
 {
@@ -38,19 +40,21 @@ class LiquidoCalback
 		$idempotencyKey = $body["data"]["chargeDetails"]["idempotencyKey"];
 		$transferStatus = $body["data"]["chargeDetails"]["transferStatus"];
 
-		$orderData = new DataObject(array(
-			'idempotencyKey' => $idempotencyKey,
-			'transferStatus' => $transferStatus,
-		));
+		// $orderData = new DataObject(array(
+		// 	'idempotencyKey' => $idempotencyKey,
+		// 	'transferStatus' => $transferStatus,
+		// ));
 
-		$this->eventManager->dispatch('update_order_in_database', ['orderData' => $orderData]);
+		$newStatus = LiquidoPayInStatus::mapToMagentoSaleOrderStatus($transferStatus);
+
+		$this->eventManager->dispatch('update_order_in_database', [
+			'incrementId' => $idempotencyKey,
+			'newStatus' => $newStatus
+		]);
         
 		return [[
 			"status" => 200,
-			"message" => "received",
-			// "body" => $body,
-			// "idempotencyKey" => $orderData->getIdempotencyKey(),
-			// "transferStatus" => $orderData->getTransferStatus(),
+			"message" => "received"
 		]];
 	}
 }

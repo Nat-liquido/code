@@ -15,28 +15,23 @@ class UpdateOrderObserver implements ObserverInterface
 
     public function execute(Observer $observer)
     {
-        $data = $observer->getData('orderData');
-        $incrementId = $data->getIdempotencyKey();
-        $newStatus = $data->getTransferStatus();
+        $incrementId = $observer->getData('incrementId');
+        $newStatus = $observer->getData('newStatus');
 
         $this->updateOrderStatus($incrementId, $newStatus);
-        // return $this;
     }
 
     private function updateOrderStatus($incrementId, $newStatus)
     {
         try {
-    
             $objectManager = ObjectManager::getInstance();
-            $incrId = "000000002";
             $collection = $objectManager->create('Magento\Sales\Model\Order');
-            $order = $collection->loadByIncrementId($incrId);
-
-            $orderId = $order->getId();
-            $orderStatus = $order->getStatus();
-            $orderIncrementId = $order->getIncrementId();
-            echo "-> entity id: $orderId; -> status: $orderStatus; -> increment id: $orderIncrementId; ";
+            $order = $collection->loadByIncrementId($incrementId);
+            // $order->setState("processing")->setStatus("processing");
+            $order->setStatus($newStatus);
+            $order->save();
         } catch (\Exception $e) {
+            echo "Not found";
             echo $e;
         }
     }
