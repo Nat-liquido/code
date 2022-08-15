@@ -109,7 +109,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         }else{
             $result=['error'=> 1, 'msg' => 'Error while creating new order.'];
         }
-        echo "increment_id: $increment_id";
         return $result;
     }
 }

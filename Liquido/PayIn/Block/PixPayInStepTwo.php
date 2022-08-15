@@ -18,6 +18,7 @@ class PixPayInStepTwo extends Template
     private $errorMsg = null;
     protected $checkoutSession;
     protected $orderData;
+    protected $cart;
 
     public function __construct(
         Context $context,
@@ -26,9 +27,13 @@ class PixPayInStepTwo extends Template
         Data $orderData,
         array $data = []
     ) {
+
         parent::__construct($context, $data);
         $this->checkoutSession = $checkoutSession;
         $this->orderData = $orderData;
+
+        $objectManager = ObjectManager::getInstance();
+        $this->cart = $objectManager->get('\Magento\Checkout\Model\Cart');
 
         $customerEmail = $this->getCustomerEmail();
 
@@ -48,7 +53,6 @@ class PixPayInStepTwo extends Template
         } catch (\Exception $e) {
             echo $e;
         }
-
     }
 
     private function getNewOrderData()
@@ -110,9 +114,9 @@ class PixPayInStepTwo extends Template
     private function getCartAmountTotal()
     {
         try {
-            $objectManager = ObjectManager::getInstance();
-            $cart = $objectManager->get('\Magento\Checkout\Model\Cart');
-            return (float) $cart->getQuote()->getGrandTotal() * 100;
+            // $objectManager = ObjectManager::getInstance();
+            // $cart = $objectManager->get('\Magento\Checkout\Model\Cart');
+            return (float) $this->cart->getQuote()->getGrandTotal() * 100;
         } catch (\Exception $e) {
             echo $e;
             return null;
@@ -122,10 +126,23 @@ class PixPayInStepTwo extends Template
     private function getCartItems()
     {
         try {
-            $objectManager = ObjectManager::getInstance();
-            $cart = $objectManager->get('\Magento\Checkout\Model\Cart');
+            // $objectManager = ObjectManager::getInstance();
+            // $cart = $objectManager->get('\Magento\Checkout\Model\Cart');
             // get quote items array
-            return $cart->getQuote()->getAllItems();
+            return $this->cart->getQuote()->getAllItems();
+        } catch (\Exception $e) {
+            echo $e;
+            return null;
+        }
+    }
+
+    public function getShippingAddress()
+    {
+        try {
+            // $objectManager = ObjectManager::getInstance();
+            // $cart = $objectManager->get('\Magento\Checkout\Model\Cart');
+            // return $cart->getQuote()->getShippingAddress();
+            return $this->cart->getQuote()->getShippingAddress();
         } catch (\Exception $e) {
             echo $e;
             return null;
