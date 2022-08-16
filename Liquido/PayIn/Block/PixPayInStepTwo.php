@@ -39,7 +39,15 @@ class PixPayInStepTwo extends Template
             $this->errorMsg = "O valor da compra deve ser maior que R$0,00.";
             return null;
         }
-        $this->pixCode = $pixPayInService->createLiquidoPixPayIn($this->orderId, $customerEmail, $grandTotal);
+
+        $callbackUrl = $this->orderData->getStoreBaseUrl() . "rest/V1/liquido-callback/post";
+
+        $this->pixCode = $pixPayInService->createLiquidoPixPayIn(
+            $this->orderId,
+            $customerEmail,
+            $grandTotal,
+            $callbackUrl
+        );
     }
 
     public function getPixCode()
@@ -82,5 +90,4 @@ class PixPayInStepTwo extends Template
             return null;
         }
     }
-
 }

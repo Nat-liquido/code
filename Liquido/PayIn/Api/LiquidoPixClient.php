@@ -37,7 +37,7 @@ class LiquidoPixClient
         $this->liquidoAccessToken = $authResponse->access_token;
     }
 
-    public function createPixPayIn($incrementId, $customerEmail, $amountTotal)
+    public function createPixPayIn($incrementId, $customerEmail, $amountTotal, $callbackUrl)
     {
 
         $this->curl->addHeader("Authorization", "Bearer $this->liquidoAccessToken");
@@ -54,7 +54,7 @@ class LiquidoPixClient
             "country" => "BR",
             "paymentMethod" => "PIX_STATIC_QR",
             "paymentFlow" => "DIRECT",
-            "callbackUrl" => "https://hookb.in/RZJb8l7NRJTNyj3N7bDY",
+            "callbackUrl" => $callbackUrl,
             "payer" => [
                 "email" => $customerEmail
             ]
