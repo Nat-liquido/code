@@ -3,16 +3,16 @@
 namespace Liquido\PayIn\Api;
 
 use \Magento\Framework\HTTP\Client\Curl;
+use \Liquido\PayIn\Helper\Data;
 // use Magento\Framework\Math\Random;
 
 class LiquidoPixClient
 {
 
-    private const BASE_URL = "https://api-qa.liquido.com";
     private const PIX_ENDPOINT = "/v1/payments/charges/pix";
-    private const API_KEY = "fztXT5QuK755svjly94H6anwAYD1Ap3249jH2djb";
 
     protected $curl;
+    protected $liquidoConfig;
 
     private $liquidoAccessToken;
 
@@ -29,7 +29,9 @@ class LiquidoPixClient
     {
         $this->curl = new Curl;
         $this->curl->addHeader("Content-Type", "application/json");
-        $this->curl->addHeader("x-api-key", LiquidoPixClient::API_KEY);
+
+        $this->liquidoConfig = new Data;
+        $this->curl->addHeader("x-api-key", $this->liquidoConfig->getApiKey());
 
         $liquidoAuthClient = new LiquidoAuthClient;
         $authJsonResponse = $liquidoAuthClient->authenticate();
@@ -42,7 +44,7 @@ class LiquidoPixClient
 
         $this->curl->addHeader("Authorization", "Bearer $this->liquidoAccessToken");
 
-        $url = $this::BASE_URL . $this::PIX_ENDPOINT;
+        $url = $this->liquidoConfig->getVirgoBaseUrl() . $this::PIX_ENDPOINT;
 
         // $mathRandom = new Random;
         // $idempotencyKey = $mathRandom->getUniqueHash();
