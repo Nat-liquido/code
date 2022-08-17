@@ -3,16 +3,16 @@
 namespace Liquido\PayIn\Api;
 
 use \Magento\Framework\HTTP\Client\Curl;
+use \Liquido\PayIn\Helper\Data;
 
 class LiquidoAuthClient
 {
 
     private const AUTH_URL = "https://auth-dev.liquido.com/oauth2/token";
-    private const CLIENT_ID = "5d64815a0i63n4vuo4haktlb3a";
-    private const CLIENT_SECRET = "1dkbocf1bojiefu2akfmnv5dd9evhmqtc833i62c7q3u8flvbt4o";
     private const GRANT_TYPE = "client_credentials";
 
     protected $curl;
+    protected $formData;
 
     // public function __construct(
     //     Curl $_curl
@@ -25,19 +25,19 @@ class LiquidoAuthClient
     {
         $this->curl = new Curl;
         $this->curl->addHeader("Content-Type", "application/x-www-form-urlencoded");
+        $liquidoConfig = new Data;
+        $this->formData = [
+            "client_id" => $liquidoConfig->getClientId(),
+            "client_secret" => $liquidoConfig->getClientSecret(),
+            "grant_type" => LiquidoAuthClient::GRANT_TYPE,
+        ];
     }
 
     public function authenticate()
     {
 
-        $form = [
-            "client_id" => LiquidoAuthClient::CLIENT_ID,
-            "client_secret" => LiquidoAuthClient::CLIENT_SECRET,
-            "grant_type" => LiquidoAuthClient::GRANT_TYPE,
-        ];
-
         try {
-            $this->curl->post(LiquidoAuthClient::AUTH_URL, $form);
+            $this->curl->post(LiquidoAuthClient::AUTH_URL, $this->formData);
             $result = $this->curl->getBody();
             return $result;
         } catch (\Exception $e) {
