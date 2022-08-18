@@ -6,14 +6,8 @@
         <!-- <script src="Liquido_PayIn::js/example.js" /> -->
     </head>
     <body>
-        <referenceContainer name="header.container" remove="true" />
-        <referenceBlock name="navigation.sections" remove="true" />
-        <referenceBlock name="catalog.compare.sidebar" remove="true" />
-        <referenceBlock name="wishlist_sidebar" remove="true" />
         <referenceContainer name="content">
             <block class="Liquido\PayIn\Block\PixPayInStepOne" name="pix.payin.step.one" template="Liquido_PayIn::pix-payin-step-one.phtml" />
         </referenceContainer>
-        <referenceContainer name="footer-container" remove="true" />
-        <referenceBlock name="copyright" remove="true" />
     </body>
 </page>

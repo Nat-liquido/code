@@ -5,11 +5,17 @@
     $brazil_payin_methods = $this->getLiquidoBrazilPayInMethods();
     ?>
 
-    <ul>
+    <ul id="payin-methods">
         <?php foreach ($brazil_payin_methods as $payin_method) : ?>
-            <li>
-                <a href="<?php echo $this->getPayInMethodViewRoute($payin_method) ?>"><?php echo $payin_method; ?></a>
-            </li>
+            <a href="<?php echo $this->getPayInMethodViewRoute($payin_method["title"]) ?>">
+                <li>
+                    <img src="<?php echo $this->getViewFileUrl($payin_method["image"]); ?>" alt="Pix image">
+                    <div class="payin-method-single">
+                        <p><?php echo $payin_method["title"]; ?></p>
+                        <small><?php echo $payin_method["description"]; ?></small>
+                    </div>
+                </li>
+            </a>
         <?php endforeach; ?>
     </ul>
 </div>

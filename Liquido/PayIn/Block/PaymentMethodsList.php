@@ -5,8 +5,18 @@ namespace Liquido\PayIn\Block;
 use \Magento\Framework\View\Element\Template;
 
 class LiquidoPayInMethod {
-    public const PIX = 'Pix';
-    public const BOLETO = 'Boleto';
+    // public const PIX = 'Pix';
+    public const PIX = [
+        "title" => "Pix",
+        "description" => "O pagamento será aprovado na hora.",
+        "image" => "Liquido_PayIn::images/pix.png"
+    ];
+    // public const BOLETO = 'Boleto';
+    public const BOLETO = [
+        "title" => "Boleto",
+        "description" => "O pagamento será aprovado em até 3 dias úteis.",
+        "image" => "Liquido_PayIn::images/boleto.png"
+    ];
 }
 
 class LiquidoPayInViewRoute {
@@ -23,13 +33,13 @@ class PaymentMethodsList extends Template
         return $brazil_payin_methods;
     }
 
-    public function getPayInMethodViewRoute($_payin_method)
+    public function getPayInMethodViewRoute($_payin_method_title)
     {
-        switch ($_payin_method) {
-            case LiquidoPayInMethod::PIX:
+        switch ($_payin_method_title) {
+            case LiquidoPayInMethod::PIX["title"]:
                 return LiquidoPayInViewRoute::PIX;
                 break;
-            case LiquidoPayInMethod::BOLETO:
+            case LiquidoPayInMethod::BOLETO["title"]:
                 return LiquidoPayInViewRoute::BOLETO;
                 break;
             default:

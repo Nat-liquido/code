@@ -15,6 +15,13 @@ define(
             },
             afterPlaceOrder: function () {
                 jQuery("body").trigger("processStart");
+                console.log(quote);
+                console.log("quote id: " + quote.getQuoteId());
+                console.log(quote.totals());
+                console.log(quote.guestEmail);
+                console.log(quote.shippingAddress());
+                const grandTotal = quote.totals()['grand_total'];
+                // var url = urlBuilder.build("liquido/checkout/start/?grandTotal="+ grandTotal);
                 var url = urlBuilder.build("liquido/checkout/start");
                 window.location.href = url;
             },
