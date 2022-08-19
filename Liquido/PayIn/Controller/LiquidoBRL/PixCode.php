@@ -1,10 +1,10 @@
 <?php
 
-namespace Liquido\PayIn\Controller\Checkout;
+namespace Liquido\PayIn\Controller\LiquidoBRL;
 
 use Magento\Framework\App\Action\Action;
 
-class Start extends Action
+class PixCode extends Action
 {
     public function execute()
     {

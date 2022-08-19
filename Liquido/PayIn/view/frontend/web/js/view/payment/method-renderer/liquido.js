@@ -22,7 +22,7 @@ define(
                 console.log(quote.shippingAddress());
                 const grandTotal = quote.totals()['grand_total'];
                 // var url = urlBuilder.build("liquido/checkout/start/?grandTotal="+ grandTotal);
-                var url = urlBuilder.build("liquido/checkout/start");
+                var url = urlBuilder.build("checkout/liquidobrl/index");
                 window.location.href = url;
             },
         });

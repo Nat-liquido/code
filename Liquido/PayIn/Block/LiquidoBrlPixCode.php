@@ -9,7 +9,7 @@ use \Magento\Checkout\Model\Session;
 use \Liquido\PayIn\Service\LiquidoPixPayInService;
 use \Liquido\PayIn\Helper\Data;
 
-class PixPayInStepTwo extends Template
+class LiquidoBrlPixCode extends Template
 {
 
     private $pixCode = "<pix_code>";
@@ -17,7 +17,6 @@ class PixPayInStepTwo extends Template
     private $errorMsg = null;
     protected $checkoutSession;
     protected $orderData;
-    protected $cart;
 
     public function __construct(
         Context $context,
@@ -67,7 +66,13 @@ class PixPayInStepTwo extends Template
 
     private function getCustomerEmail()
     {
-        return $this->getRequest()->getParam('email_address');
+        try {
+            $orderObj = $this->checkoutSession->getLastRealOrder();
+            return $orderObj->getCustomerEmail();
+        } catch (\Exception $e) {
+            echo $e;
+            return null;
+        }
     }
 
     private function getIncrementId()

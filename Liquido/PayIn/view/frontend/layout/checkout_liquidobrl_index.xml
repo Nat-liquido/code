@@ -7,7 +7,7 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Liquido\PayIn\Block\PixPayInStepOne" name="pix.payin.step.one" template="Liquido_PayIn::pix-payin-step-one.phtml" />
+            <block class="Liquido\PayIn\Block\LiquidoBrlIndex" name="payment.methods.list" template="Liquido_PayIn::liquido-brl-index.phtml" />
         </referenceContainer>
     </body>
 </page>

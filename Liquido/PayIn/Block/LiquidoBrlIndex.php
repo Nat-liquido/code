@@ -4,27 +4,10 @@ namespace Liquido\PayIn\Block;
 
 use \Magento\Framework\View\Element\Template;
 
-class LiquidoPayInMethod {
-    // public const PIX = 'Pix';
-    public const PIX = [
-        "title" => "Pix",
-        "description" => "O pagamento será aprovado na hora.",
-        "image" => "Liquido_PayIn::images/pix.png"
-    ];
-    // public const BOLETO = 'Boleto';
-    public const BOLETO = [
-        "title" => "Boleto",
-        "description" => "O pagamento será aprovado em até 3 dias úteis.",
-        "image" => "Liquido_PayIn::images/boleto.png"
-    ];
-}
+use \Liquido\PayIn\Util\LiquidoPayInMethod;
+use \Liquido\PayIn\Util\LiquidoPayInViewRoute;
 
-class LiquidoPayInViewRoute {
-    public const PIX = 'pixstepone';
-    public const BOLETO = '#';
-}
-
-class PaymentMethodsList extends Template
+class LiquidoBrlIndex extends Template
 {
 
     public function getLiquidoBrazilPayInMethods()
